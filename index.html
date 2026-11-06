@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ExRL learns how long to execute each action chunk, enabling sample-efficient online adaptation of robot policies.">
+  <meta name="referrer" content="no-referrer">
+  <title>ExRL: Sample-Efficient Online Adaptation of Long-Chunk Policies via Execution Length Control</title>
+  <link rel="stylesheet" href="static/css/fonts.css">
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/nerfies.css">
+  <link rel="stylesheet" href="static/css/exrl.css">
+  <script src="static/js/exrl.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#abstract">Skip to content</a>
+<nav class="navbar" aria-label="Page navigation">
+  <div class="nav-links">
+    <a href="#top" aria-label="ExRL home">ExRL</a>
+    <a href="#real-world">Real world</a>
+    <a href="#method">Method</a>
+    <a href="#results">Results</a>
+  </div>
+</nav>
+<main id="top">
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered"><div class="column has-text-centered">
+        <h1 class="title is-1 publication-title">ExRL: Sample-Efficient Online Adaptation of Long-Chunk Policies via Execution Length Control</h1>
+        <div class="is-size-5 publication-authors">
+          <span class="author-block">Xu Luo<sup>1</sup>,</span>
+          <span class="author-block">Jiaying Yang<sup>2</sup>,</span>
+          <span class="author-block">Hao Wu<sup>1</sup>,</span>
+          <span class="author-block">Junlin Xie<sup>1</sup>,</span><br class="author-break">
+          <span class="author-block">Zijin Hong<sup>3</sup>,</span>
+          <span class="author-block">Ji Zhang<sup>1</sup>,</span>
+          <span class="author-block">Lianli Gao<sup>1</sup>,</span>
+          <span class="author-block">Jingkuan Song<sup>2</sup></span>
+        </div>
+        <div class="is-size-5 publication-authors affiliations">
+          <span class="author-block"><sup>1</sup>UESTC</span>
+          <span class="author-block"><sup>2</sup>Tongji University</span>
+          <span class="author-block"><sup>3</sup>The Hong Kong Polytechnic University</span>
+        </div>
+        <div class="column has-text-centered"><div class="publication-links">
+          <span class="link-block"><a class="button is-normal is-rounded is-dark" href="paper.pdf" target="_blank" rel="noopener"><span class="button-symbol" aria-hidden="true">▤</span>Paper</a></span>
+          <span class="link-block"><a class="button is-normal is-rounded is-dark" href="#teaser"><span class="button-symbol" aria-hidden="true">▶</span>Video</a></span>
+          <span class="link-block"><a class="button is-normal is-rounded is-dark" href="https://anonymous.4open.science/r/ExRL-code/" target="_blank" rel="noopener"><span class="button-symbol code-symbol" aria-hidden="true">&lt;/&gt;</span>Code</a></span>
+        </div></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser" aria-label="ExRL overview video">
+  <div class="container is-max-desktop"><div class="hero-body">
+    <video id="teaser" controls autoplay muted playsinline preload="metadata" poster="static/images/teaser.jpg" aria-label="ExRL overview: motivation, method, results, and real-world training"><source src="static/videos/teaser.mp4" type="video/mp4"></video>
+    <p class="tldr"><strong>TL;DR: ExRL learns when to replan.</strong> A small RL adapter selects how much of each predicted action chunk to execute, enabling sample-efficient improvement of long-chunk robot policies.</p>
+  </div></div>
+</section>
+
+<section class="section" id="abstract">
+  <div class="container is-max-desktop"><div class="columns is-centered"><div class="column is-four-fifths">
+    <h2 class="title is-3 has-text-centered">Abstract</h2>
+    <div class="content has-text-justified">
+      <p>Predicting long action chunks, often spanning dozens of timesteps, has become a key ingredient in increasingly capable robot policies. In this paper, we find that adapting these long-chunk policies with existing reinforcement learning (RL) methods can require many online samples due to the high dimensionality of the action chunks being optimized, making such adaptation impractical in real-world scenarios where interaction data are costly to collect. Our key insight is to shift adaptation from optimizing actions to optimizing how long to execute each predicted action chunk. This keeps the adaptation space low-dimensional while its expressivity grows with the chunk size. We thus introduce <em>Execution at the Right Length</em> (ExRL), a simple approach which augments the base policy with a lightweight adapter that predicts the execution length of each chunk and is trained using standard off-policy RL algorithms. Across simulation benchmarks and real-world robotic tasks, ExRL enables sample-efficient adaptation of a diverse range of long-chunk policies with minimal task-specific hyperparameter tuning.</p>
+    </div>
+  </div></div></div>
+</section>
+
+<section class="section real-world" id="real-world">
+  <div class="container is-widescreen has-text-centered">
+    <h2 class="title is-3">Adapting π<sub>0.5</sub> with ExRL</h2>
+    <p class="section-intro">ExRL improves π<sub>0.5</sub> through online interaction by learning how long to execute each predicted chunk. The base policy stays frozen throughout RL.</p>
+    <div id="real-world-videos"></div>
+    <p class="figure-caption">Nine rollouts from the base policy and nine successful rollouts with ExRL.</p>
+  </div>
+</section>
+
+<section class="section" id="challenge">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">The challenge of adapting long-chunk policies</h2>
+    <div class="content prose">
+      <p>Modern robot policies often predict dozens of actions at a time. These long chunks support smooth, coordinated behavior, but make online adaptation harder. Existing RL methods optimize actions or latent variables in a space that grows with the chunk size. On Tool Hang, these methods become less sample-efficient as chunks get longer.</p>
+    </div>
+    <figure class="paper-figure"><img src="static/images/toolhang-intro.png" alt="Tool Hang sample efficiency across chunk sizes and success-rate curves at chunk size 25; ExRL retains strong performance at longer chunks." loading="lazy" width="1800" height="780"><figcaption>ExRL maintains strong sample efficiency as the action chunk grows.</figcaption></figure>
+  </div>
+</section>
+
+<section class="section" id="method">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">ExRL: learning execution length with RL</h2>
+    <div class="content prose"><p>At each policy query, ExRL observes the current state and the predicted action chunk, then selects an execution length <em>k</em>. The robot executes the first <em>k</em> actions, observes the new state, and queries the base policy again.</p></div>
+    <figure class="paper-figure method-figure"><img src="static/images/method.png" alt="The frozen base policy predicts an action chunk. An RL adapter takes both state and chunk as input, chooses k, and executes the first k actions." loading="lazy" width="2200" height="680"></figure>
+    <div class="content prose">
+      <p>A short execution allows an early correction; a longer execution lets a useful sequence unfold. Learning this choice gives the robot control over when to replan through a single scalar decision. Longer chunks offer more choices while the decision remains one-dimensional.</p>
+      <p>We train the adapter with off-policy RL. Successful online trajectories can also improve the base policy through behavior cloning, and offline demonstrations provide additional experience for learning execution lengths.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="results">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Sample-efficient adaptation across robot policies</h2>
+    <p class="section-intro">ExRL improves long-chunk policies across Robomimic, Adroit, and LIBERO, from Diffusion Policy and ACT to π<sub>0</sub>, π<sub>0.5</sub>, π<sub>0</sub>-FAST, and Cosmos Policy.</p>
+    <div class="tabs is-centered" role="tablist" aria-label="Simulation benchmarks">
+      <ul><li class="is-active"><button type="button" role="tab" aria-selected="true" id="result-tab-robo" aria-controls="result-robo" data-result="robo">Robomimic</button></li><li><button type="button" role="tab" aria-selected="false" tabindex="-1" id="result-tab-adroit" aria-controls="result-adroit" data-result="adroit">Adroit</button></li><li><button type="button" role="tab" aria-selected="false" tabindex="-1" id="result-tab-libero" aria-controls="result-libero" data-result="libero">LIBERO</button></li></ul>
+    </div>
+    <div id="result-robo" role="tabpanel" aria-labelledby="result-tab-robo" tabindex="0">
+      <h3 class="title is-4 has-text-centered">Diffusion Policy and ACT</h3>
+      <p class="content prose">On Robomimic, ExRL adapts policies with 50-action chunks, including challenging tasks such as Tool Hang and Transport. On Tool Hang with Diffusion Policy, ExRL exceeds 90% success while the other RL baselines remain around 20% or below.</p>
+      <figure class="paper-figure"><img src="static/images/robomimic.png" alt="Learning curves comparing online RL methods across Robomimic tasks and policy backbones." loading="lazy"><figcaption>Mean and 95% confidence intervals over three seeds.</figcaption></figure>
+    </div>
+    <div id="result-adroit" role="tabpanel" aria-labelledby="result-tab-adroit" tabindex="0" hidden>
+      <h3 class="title is-4 has-text-centered">Dexterous manipulation</h3>
+      <p class="content prose">On Adroit, ExRL adapts Diffusion Policy across four dexterous hand tasks. Distilling successful trajectories back into the base policy further improves learning.</p>
+      <figure class="paper-figure"><img src="static/images/adroit.png" alt="Success-rate learning curves on Adroit Door, Hammer, Pen, and Relocate." loading="lazy"><figcaption>Mean and 95% confidence intervals over three seeds.</figcaption></figure>
+    </div>
+    <div id="result-libero" role="tabpanel" aria-labelledby="result-tab-libero" tabindex="0" hidden>
+      <h3 class="title is-4 has-text-centered">Generalist robot policies</h3>
+      <p class="content prose">The same execution-length interface adapts flow-based VLAs, an autoregressive VLA, and a world action model. On LIBERO, ExRL improves π<sub>0.5</sub> from nearly 0% to over 90% success within 200,000 environment steps.</p>
+      <figure class="paper-figure"><img src="static/images/libero.png" alt="LIBERO learning curves for pi0, pi0.5, pi0-FAST, and Cosmos Policy." loading="lazy"><figcaption>Mean and 95% confidence intervals over three seeds.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="execution">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Watching ExRL choose execution lengths</h2>
+    <p class="section-intro">The videos show each rollout together with the execution length selected by ExRL.</p>
+    <div class="tabs is-centered gallery-groups" role="tablist" aria-label="Rollout benchmark"><ul id="gallery-groups"></ul></div>
+    <div class="clip-buttons" id="gallery-tasks" aria-label="Choose a task"></div>
+    <figure class="rollout-figure" id="rollout-panel" role="tabpanel" tabindex="0">
+      <video id="rollout-video" controls muted loop playsinline preload="none" poster="static/images/robomimic-square.jpg" aria-label="Square rollout with measured execution-length trace"><source src="static/videos/robomimic-square.mp4" type="video/mp4"></video>
+      <figcaption id="rollout-caption">Square · Diffusion Policy · 2× playback</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" id="understanding">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">What does ExRL learn about action chunks?</h2>
+    <div class="columns understanding-text">
+      <div class="column"><h3 class="title is-4">Replan near contact</h3><div class="content"><p>ExRL often uses longer executions during free motion and shorter ones near an object or target. In power insertion, it repeatedly replans near contact, then commits to a longer execution to finish inserting the plug.</p></div></div>
+      <div class="column"><h3 class="title is-4">Let useful chunks unfold</h3><div class="content"><p>On Square, ExRL cuts short proposals with little predicted progress, then executes more of a chunk that contains a sustained grasp-and-lift motion. Short executions create opportunities for correction and a new prediction; longer executions preserve progress through a useful sequence.</p></div></div>
+    </div>
+    <figure class="paper-figure"><img src="static/images/execution-patterns.png" alt="Measured execution patterns: shorter executions near contact, short prefixes for low-progress proposals, and longer executions for grasping and lifting." loading="lazy"></figure>
+    <h3 class="title is-4 has-text-centered secondary-heading">Why can frequent replanning get stuck?</h3>
+    <div class="content prose"><p>When successive observations produce similar policy features, querying the policy again can reproduce nearly the same first action. The robot may keep moving without reaching the later actions in a useful chunk. Allowing the chunk to continue preserves that progression.</p></div>
+    <figure class="paper-figure"><img src="static/images/feature-aliasing.png" alt="Feature similarity is associated with repeated first actions. Executing an action chunk preserves a sequence of varying commands that repeated replanning misses." loading="lazy"></figure>
+    <p class="closing-line">ExRL learns to match execution length to both the situation and the proposed actions.</p>
+  </div>
+</section>
+</main>
+<footer class="footer">
+  <div class="container"><div class="columns is-centered"><div class="column is-8"><div class="content">
+    <p>Website adapted from <a href="https://nerfies.github.io/">Nerfies</a> and inspired by <a href="https://diffusion-steering.github.io/">DSRL</a>. Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</p>
+  </div></div></div></div>
+</footer>
+</body>
+</html>
