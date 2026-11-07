@@ -1,3 +1,4 @@
+/* Match DSRL's Google Fonts request: regular faces with browser-synthesized bold. */
 @font-face {
   font-family: 'Google Sans';
   font-style: normal;
@@ -5,35 +6,9 @@
   src: url(../fonts/font-0.ttf) format('truetype');
 }
 @font-face {
-  font-family: 'Google Sans';
-  font-style: normal;
-  font-weight: 500;
-  src: url(../fonts/font-1.ttf) format('truetype');
-}
-@font-face {
-  font-family: 'Google Sans';
-  font-style: normal;
-  font-weight: 700;
-  src: url(../fonts/font-2.ttf) format('truetype');
-}
-@font-face {
   font-family: 'Noto Sans';
   font-style: normal;
   font-weight: 400;
   font-stretch: normal;
   src: url(../fonts/font-3.ttf) format('truetype');
-}
-@font-face {
-  font-family: 'Noto Sans';
-  font-style: normal;
-  font-weight: 600;
-  font-stretch: normal;
-  src: url(../fonts/font-4.ttf) format('truetype');
-}
-@font-face {
-  font-family: 'Noto Sans';
-  font-style: normal;
-  font-weight: 700;
-  font-stretch: normal;
-  src: url(../fonts/font-5.ttf) format('truetype');
 }

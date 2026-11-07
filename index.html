@@ -10,42 +10,36 @@
   <link rel="stylesheet" href="static/css/bulma.min.css">
   <link rel="stylesheet" href="static/css/nerfies.css">
   <link rel="stylesheet" href="static/css/exrl.css">
+  <script src="static/js/mathjax-config.js" defer></script>
+  <script src="static/vendor/mathjax/tex-svg.js" defer></script>
   <script src="static/js/exrl.js" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#abstract">Skip to content</a>
-<nav class="navbar" aria-label="Page navigation">
-  <div class="nav-links">
-    <a href="#top" aria-label="ExRL home">ExRL</a>
-    <a href="#real-world">Real world</a>
-    <a href="#method">Method</a>
-    <a href="#results">Results</a>
-  </div>
-</nav>
 <main id="top">
-<section class="hero">
+<section class="hero publication-header">
   <div class="hero-body">
     <div class="container is-max-desktop">
       <div class="columns is-centered"><div class="column has-text-centered">
-        <h1 class="title is-1 publication-title">ExRL: Sample-Efficient Online Adaptation of Long-Chunk Policies via Execution Length Control</h1>
-        <div class="is-size-5 publication-authors">
-          <span class="author-block">Xu Luo<sup>1</sup>,</span>
-          <span class="author-block">Jiaying Yang<sup>2</sup>,</span>
-          <span class="author-block">Hao Wu<sup>1</sup>,</span>
-          <span class="author-block">Junlin Xie<sup>1</sup>,</span><br class="author-break">
-          <span class="author-block">Zijin Hong<sup>3</sup>,</span>
-          <span class="author-block">Ji Zhang<sup>1</sup>,</span>
-          <span class="author-block">Lianli Gao<sup>1</sup>,</span>
-          <span class="author-block">Jingkuan Song<sup>2</sup></span>
+        <h1 class="title is-1 publication-title"><span class="title-line">ExRL: Sample-Efficient Online Adaptation</span> <span class="title-line">of Long-Chunk Policies via Execution Length Control</span></h1>
+        <div class="publication-authors author-list">
+          <span class="author-block"><a href="https://frankluox.github.io/" target="_blank" rel="noopener">Xu Luo</a><sup>1</sup>,</span>
+          <span class="author-block"><a href="https://openreview.net/profile?id=~Jiaying_Yang3" target="_blank" rel="noopener">Jiaying Yang</a><sup>2</sup>,</span>
+          <span class="author-block"><a href="https://pyjnqd.github.io/" target="_blank" rel="noopener">Hao Wu</a><sup>1</sup>,</span>
+          <span class="author-block"><a href="https://memo.sylin.host/" target="_blank" rel="noopener">Junlin Xie</a><sup>1</sup>,</span>
+          <span class="author-block"><a href="https://scholar.google.com/citations?user=1zNPXwQAAAAJ&amp;hl=en" target="_blank" rel="noopener">Zijin Hong</a><sup>3</sup>,</span>
+          <span class="author-block"><a href="https://jimzai.com/" target="_blank" rel="noopener">Ji Zhang</a><sup>1</sup>,</span>
+          <span class="author-block"><a href="https://lianligao.github.io/" target="_blank" rel="noopener">Lianli Gao</a><sup>1</sup>,</span>
+          <span class="author-block"><a href="https://jingkuansong.github.io/" target="_blank" rel="noopener">Jingkuan Song</a><sup>2</sup></span>
         </div>
-        <div class="is-size-5 publication-authors affiliations">
+        <div class="publication-authors affiliations">
           <span class="author-block"><sup>1</sup>UESTC</span>
           <span class="author-block"><sup>2</sup>Tongji University</span>
           <span class="author-block"><sup>3</sup>The Hong Kong Polytechnic University</span>
         </div>
+        <p class="publication-venue">CoRL 2026 R2RL (<span class="oral">Oral</span>)</p>
         <div class="column has-text-centered"><div class="publication-links">
           <span class="link-block"><a class="button is-normal is-rounded is-dark" href="paper.pdf" target="_blank" rel="noopener"><span class="button-symbol" aria-hidden="true">▤</span>Paper</a></span>
-          <span class="link-block"><a class="button is-normal is-rounded is-dark" href="#teaser"><span class="button-symbol" aria-hidden="true">▶</span>Video</a></span>
           <span class="link-block"><a class="button is-normal is-rounded is-dark" href="https://anonymous.4open.science/r/ExRL-code/" target="_blank" rel="noopener"><span class="button-symbol code-symbol" aria-hidden="true">&lt;/&gt;</span>Code</a></span>
         </div></div>
       </div></div>
@@ -55,8 +49,8 @@
 
 <section class="hero teaser" aria-label="ExRL overview video">
   <div class="container is-max-desktop"><div class="hero-body">
-    <video id="teaser" controls autoplay muted playsinline preload="metadata" poster="static/images/teaser.jpg" aria-label="ExRL overview: motivation, method, results, and real-world training"><source src="static/videos/teaser.mp4" type="video/mp4"></video>
-    <p class="tldr"><strong>TL;DR: ExRL learns when to replan.</strong> A small RL adapter selects how much of each predicted action chunk to execute, enabling sample-efficient improvement of long-chunk robot policies.</p>
+    <video id="teaser" controls autoplay muted playsinline preload="metadata" poster="static/images/teaser-v47.jpg" aria-label="ExRL overview: motivation, method, results, and real-world training"><source src="static/videos/teaser-v47.mp4" type="video/mp4"></video>
+    <p class="tldr"><strong>TL;DR:</strong> We propose ExRL: adapting long-chunk robot policies by training a lightweight RL adapter to select how much of each predicted action chunk to execute. ExRL enables sample-efficient online improvement across diverse robot policies in simulation and the real world.</p>
   </div></div>
 </section>
 
@@ -64,17 +58,16 @@
   <div class="container is-max-desktop"><div class="columns is-centered"><div class="column is-four-fifths">
     <h2 class="title is-3 has-text-centered">Abstract</h2>
     <div class="content has-text-justified">
-      <p>Predicting long action chunks, often spanning dozens of timesteps, has become a key ingredient in increasingly capable robot policies. In this paper, we find that adapting these long-chunk policies with existing reinforcement learning (RL) methods can require many online samples due to the high dimensionality of the action chunks being optimized, making such adaptation impractical in real-world scenarios where interaction data are costly to collect. Our key insight is to shift adaptation from optimizing actions to optimizing how long to execute each predicted action chunk. This keeps the adaptation space low-dimensional while its expressivity grows with the chunk size. We thus introduce <em>Execution at the Right Length</em> (ExRL), a simple approach which augments the base policy with a lightweight adapter that predicts the execution length of each chunk and is trained using standard off-policy RL algorithms. Across simulation benchmarks and real-world robotic tasks, ExRL enables sample-efficient adaptation of a diverse range of long-chunk policies with minimal task-specific hyperparameter tuning.</p>
+      <p>Predicting long action chunks, often spanning dozens of timesteps, has become a key ingredient in increasingly capable robot policies. In this paper, we find that adapting these long-chunk policies with existing reinforcement learning (RL) methods can require many online samples due to the high dimensionality of the action chunks being optimized, making such adaptation impractical in real-world scenarios where interaction data are costly to collect. Our key insight is to shift adaptation from optimizing actions to optimizing how long to execute each predicted action chunk. This keeps the adaptation space low-dimensional while its expressivity grows with the chunk size. We thus introduce <em>Execution at the Right Length</em> (ExRL), a simple approach which augments the base policy with a lightweight adapter that predicts the execution length of each chunk and is trained using off-policy RL algorithms. Across simulation benchmarks and real-world robotic tasks, ExRL enables sample-efficient adaptation of a diverse range of long-chunk policies with minimal task-specific hyperparameter tuning.</p>
     </div>
   </div></div></div>
 </section>
 
 <section class="section real-world" id="real-world">
   <div class="container is-widescreen has-text-centered">
-    <h2 class="title is-3">Adapting π<sub>0.5</sub> with ExRL</h2>
-    <p class="section-intro">ExRL improves π<sub>0.5</sub> through online interaction by learning how long to execute each predicted chunk. The base policy stays frozen throughout RL.</p>
+    <h2 class="title is-3">Adapting \(\pi_{0.5}\) with ExRL</h2>
+    <p class="section-intro">ExRL improves \(\pi_{0.5}\) through online interaction by learning how long to execute each predicted chunk. The base policy stays frozen throughout RL.</p>
     <div id="real-world-videos"></div>
-    <p class="figure-caption">Nine rollouts from the base policy and nine successful rollouts with ExRL.</p>
   </div>
 </section>
 
@@ -84,7 +77,7 @@
     <div class="content prose">
       <p>Modern robot policies often predict dozens of actions at a time. These long chunks support smooth, coordinated behavior, but make online adaptation harder. Existing RL methods optimize actions or latent variables in a space that grows with the chunk size. On Tool Hang, these methods become less sample-efficient as chunks get longer.</p>
     </div>
-    <figure class="paper-figure"><img src="static/images/toolhang-intro.png" alt="Tool Hang sample efficiency across chunk sizes and success-rate curves at chunk size 25; ExRL retains strong performance at longer chunks." loading="lazy" width="1800" height="780"><figcaption>ExRL maintains strong sample efficiency as the action chunk grows.</figcaption></figure>
+    <figure class="paper-figure"><img src="static/images/toolhang-intro.png" alt="Tool Hang sample efficiency across chunk sizes and success-rate curves at chunk size 25; ExRL retains strong performance at longer chunks." loading="lazy" width="1800" height="780"></figure>
   </div>
 </section>
 
@@ -92,10 +85,20 @@
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">ExRL: learning execution length with RL</h2>
     <div class="content prose"><p>At each policy query, ExRL observes the current state and the predicted action chunk, then selects an execution length <em>k</em>. The robot executes the first <em>k</em> actions, observes the new state, and queries the base policy again.</p></div>
-    <figure class="paper-figure method-figure"><img src="static/images/method.png" alt="The frozen base policy predicts an action chunk. An RL adapter takes both state and chunk as input, chooses k, and executes the first k actions." loading="lazy" width="2200" height="680"></figure>
+    <figure class="paper-figure method-figure"><img src="static/images/method-v2.png" alt="The frozen base policy predicts an action chunk. An RL adapter takes both state and chunk as input, chooses k, and executes the first k actions." loading="lazy" width="2200" height="680"></figure>
     <div class="content prose">
       <p>A short execution allows an early correction; a longer execution lets a useful sequence unfold. Learning this choice gives the robot control over when to replan through a single scalar decision. Longer chunks offer more choices while the decision remains one-dimensional.</p>
-      <p>We train the adapter with off-policy RL. Successful online trajectories can also improve the base policy through behavior cloning, and offline demonstrations provide additional experience for learning execution lengths.</p>
+      <p>We train the adapter with off-policy RL.</p>
+    </div>
+    <div class="method-extension" id="online-bc">
+      <h3 class="title is-4 has-text-centered">Improving the base policy with online BC</h3>
+      <div class="content prose"><p>Successful ExRL rollouts provide new training data for the base policy. We combine the executed prefixes from successive predictions into new action-chunk targets and use behavior cloning to improve the base policy's predictions.</p></div>
+      <figure class="paper-figure"><img src="static/images/method-online-bc.png" alt="The trajectory continues from s_(t+k) through later states to terminal state s_T, then supplies a successful online rollout. Overlapping H-step sliding windows of the executed actions provide multiple behavior-cloning targets for the base policy." loading="lazy" width="2200" height="950"></figure>
+    </div>
+    <div class="method-extension" id="offline-data">
+      <h3 class="title is-4 has-text-centered">Learning from offline data</h3>
+      <div class="content prose"><p>ExRL reuses offline trajectories, such as human demonstrations, to accelerate online adaptation. Recorded action sequences become virtual chunks: each prefix supplies an execution length, an accumulated reward, and a resulting state. These transitions join online experience in RL replay to train the execution policy.</p></div>
+      <figure class="paper-figure"><img src="static/images/method-offline-data.png" alt="A contiguous H-step segment is selected from a longer offline trajectory to form a virtual action chunk. Its prefixes of different lengths initialize RL replay data." loading="lazy" width="2200" height="700"></figure>
     </div>
   </div>
 </section>
@@ -103,24 +106,24 @@
 <section class="section" id="results">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">Sample-efficient adaptation across robot policies</h2>
-    <p class="section-intro">ExRL improves long-chunk policies across Robomimic, Adroit, and LIBERO, from Diffusion Policy and ACT to π<sub>0</sub>, π<sub>0.5</sub>, π<sub>0</sub>-FAST, and Cosmos Policy.</p>
+    <p class="section-intro">ExRL improves long-chunk policies across Robomimic, Adroit, and LIBERO, from Diffusion Policy and ACT to \(\pi_{0}\), \(\pi_{0.5}\), \(\pi_{0}\)-FAST, and Cosmos Policy.</p>
     <div class="tabs is-centered" role="tablist" aria-label="Simulation benchmarks">
       <ul><li class="is-active"><button type="button" role="tab" aria-selected="true" id="result-tab-robo" aria-controls="result-robo" data-result="robo">Robomimic</button></li><li><button type="button" role="tab" aria-selected="false" tabindex="-1" id="result-tab-adroit" aria-controls="result-adroit" data-result="adroit">Adroit</button></li><li><button type="button" role="tab" aria-selected="false" tabindex="-1" id="result-tab-libero" aria-controls="result-libero" data-result="libero">LIBERO</button></li></ul>
     </div>
     <div id="result-robo" role="tabpanel" aria-labelledby="result-tab-robo" tabindex="0">
       <h3 class="title is-4 has-text-centered">Diffusion Policy and ACT</h3>
       <p class="content prose">On Robomimic, ExRL adapts policies with 50-action chunks, including challenging tasks such as Tool Hang and Transport. On Tool Hang with Diffusion Policy, ExRL exceeds 90% success while the other RL baselines remain around 20% or below.</p>
-      <figure class="paper-figure"><img src="static/images/robomimic.png" alt="Learning curves comparing online RL methods across Robomimic tasks and policy backbones." loading="lazy"><figcaption>Mean and 95% confidence intervals over three seeds.</figcaption></figure>
+      <figure class="paper-figure"><img src="static/images/robomimic.png" alt="Learning curves comparing online RL methods across Robomimic tasks and policy backbones." loading="lazy"></figure>
     </div>
     <div id="result-adroit" role="tabpanel" aria-labelledby="result-tab-adroit" tabindex="0" hidden>
       <h3 class="title is-4 has-text-centered">Dexterous manipulation</h3>
       <p class="content prose">On Adroit, ExRL adapts Diffusion Policy across four dexterous hand tasks. Distilling successful trajectories back into the base policy further improves learning.</p>
-      <figure class="paper-figure"><img src="static/images/adroit.png" alt="Success-rate learning curves on Adroit Door, Hammer, Pen, and Relocate." loading="lazy"><figcaption>Mean and 95% confidence intervals over three seeds.</figcaption></figure>
+      <figure class="paper-figure"><img src="static/images/adroit.png" alt="Success-rate learning curves on Adroit Door, Hammer, Pen, and Relocate." loading="lazy"></figure>
     </div>
     <div id="result-libero" role="tabpanel" aria-labelledby="result-tab-libero" tabindex="0" hidden>
       <h3 class="title is-4 has-text-centered">Generalist robot policies</h3>
-      <p class="content prose">The same execution-length interface adapts flow-based VLAs, an autoregressive VLA, and a world action model. On LIBERO, ExRL improves π<sub>0.5</sub> from nearly 0% to over 90% success within 200,000 environment steps.</p>
-      <figure class="paper-figure"><img src="static/images/libero.png" alt="LIBERO learning curves for pi0, pi0.5, pi0-FAST, and Cosmos Policy." loading="lazy"><figcaption>Mean and 95% confidence intervals over three seeds.</figcaption></figure>
+      <p class="content prose">The same execution-length interface adapts flow-based VLAs, an autoregressive VLA, and a world action model. On LIBERO, ExRL improves \(\pi_{0.5}\) from nearly 0% to over 90% success within 200,000 environment steps.</p>
+      <figure class="paper-figure"><img src="static/images/libero.png" alt="LIBERO learning curves for pi0, pi0.5, pi0-FAST, and Cosmos Policy." loading="lazy"></figure>
     </div>
   </div>
 </section>
@@ -132,8 +135,7 @@
     <div class="tabs is-centered gallery-groups" role="tablist" aria-label="Rollout benchmark"><ul id="gallery-groups"></ul></div>
     <div class="clip-buttons" id="gallery-tasks" aria-label="Choose a task"></div>
     <figure class="rollout-figure" id="rollout-panel" role="tabpanel" tabindex="0">
-      <video id="rollout-video" controls muted loop playsinline preload="none" poster="static/images/robomimic-square.jpg" aria-label="Square rollout with measured execution-length trace"><source src="static/videos/robomimic-square.mp4" type="video/mp4"></video>
-      <figcaption id="rollout-caption">Square · Diffusion Policy · 2× playback</figcaption>
+      <video id="rollout-video" controls muted loop playsinline preload="none" poster="static/images/real-fold-execution-multi-v2-steps.jpg" aria-label="Fold cloth rollouts with measured execution-length traces. pi 0.5, two rollouts at 2 times speed."><source src="static/videos/real-fold-execution-multi-v2-steps.mp4" type="video/mp4"></video>
     </figure>
   </div>
 </section>
