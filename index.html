@@ -49,8 +49,8 @@
 
 <section class="hero teaser" aria-label="ExRL overview video">
   <div class="container is-max-desktop"><div class="hero-body">
-    <video id="teaser" controls autoplay muted playsinline preload="metadata" poster="static/images/teaser-v47.jpg" aria-label="ExRL overview: motivation, method, results, and real-world training"><source src="static/videos/teaser-v47.mp4" type="video/mp4"></video>
-    <p class="tldr"><strong>TL;DR:</strong> We propose ExRL: adapting long-chunk robot policies by training a lightweight RL adapter to select how much of each predicted action chunk to execute. ExRL enables sample-efficient online improvement across diverse robot policies in simulation and the real world.</p>
+    <video id="teaser" controls autoplay muted playsinline preload="metadata" poster="static/images/teaser-v53-base.jpg" aria-label="ExRL overview: motivation, method, results, and real-world training"><source src="static/videos/teaser-v53-base.mp4" type="video/mp4"></video>
+    <p class="tldr"><strong>TL;DR:</strong> ExRL enables sample-efficient online improvement of long-chunk robot policies. It learns how much of each predicted chunk to execute using a lightweight RL policy, improving task performance across simulation and the real world.</p>
   </div></div>
 </section>
 
@@ -66,7 +66,6 @@
 <section class="section real-world" id="real-world">
   <div class="container is-widescreen has-text-centered">
     <h2 class="title is-3">Adapting \(\pi_{0.5}\) with ExRL</h2>
-    <p class="section-intro">ExRL improves \(\pi_{0.5}\) through online interaction by learning how long to execute each predicted chunk. The base policy stays frozen throughout RL.</p>
     <div id="real-world-videos"></div>
   </div>
 </section>
@@ -75,30 +74,29 @@
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">The challenge of adapting long-chunk policies</h2>
     <div class="content prose">
-      <p>Modern robot policies often predict dozens of actions at a time. These long chunks support smooth, coordinated behavior, but make online adaptation harder. Existing RL methods optimize actions or latent variables in a space that grows with the chunk size. On Tool Hang, these methods become less sample-efficient as chunks get longer.</p>
+      <p>Many robot policies predict dozens of actions at a time to produce smooth, coordinated motion. Adapting these long action chunks with RL can be costly: methods that optimize entire chunks or their latent variables face a search space that grows with the chunk size. The Tool Hang results below show the resulting loss in sample efficiency. On a real robot, every extra trial adds to the time and cost of adaptation.</p>
     </div>
-    <figure class="paper-figure"><img src="static/images/toolhang-intro.png" alt="Tool Hang sample efficiency across chunk sizes and success-rate curves at chunk size 25; ExRL retains strong performance at longer chunks." loading="lazy" width="1800" height="780"></figure>
+    <figure class="paper-figure"><img src="static/images/toolhang-intro-paper-v2.png" alt="Tool Hang sample efficiency across chunk sizes and success-rate curves at chunk size 25; ExRL retains strong performance at longer chunks." loading="lazy" width="1426" height="632"></figure>
   </div>
 </section>
 
 <section class="section" id="method">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">ExRL: learning execution length with RL</h2>
-    <div class="content prose"><p>At each policy query, ExRL observes the current state and the predicted action chunk, then selects an execution length <em>k</em>. The robot executes the first <em>k</em> actions, observes the new state, and queries the base policy again.</p></div>
-    <figure class="paper-figure method-figure"><img src="static/images/method-v2.png" alt="The frozen base policy predicts an action chunk. An RL adapter takes both state and chunk as input, chooses k, and executes the first k actions." loading="lazy" width="2200" height="680"></figure>
+    <div class="content prose"><p>ExRL addresses this bottleneck by shifting RL to a single decision: how long to execute each predicted action chunk. Short executions let the robot correct its motion using a fresh observation; longer executions preserve useful motion within the chunk. As chunks get longer, the robot gains more choices for when to replan, while the adaptation space stays one-dimensional.</p></div>
+    <figure class="paper-figure method-figure"><img src="static/images/method-core-paper-v3.png" alt="The base policy predicts an action chunk. The execution policy takes the state and chunk as input, chooses k, and learns from the resulting interaction through RL." loading="lazy" width="3300" height="746"></figure>
     <div class="content prose">
-      <p>A short execution allows an early correction; a longer execution lets a useful sequence unfold. Learning this choice gives the robot control over when to replan through a single scalar decision. Longer chunks offer more choices while the decision remains one-dimensional.</p>
-      <p>We train the adapter with off-policy RL.</p>
+      <p>We train a lightweight execution policy with off-policy RL and task rewards. Given the current state and the base policy's predicted chunk, it chooses an execution length \(k\). The robot executes the first \(k\) actions, observes the new state, and asks the base policy for another chunk.</p>
     </div>
     <div class="method-extension" id="online-bc">
       <h3 class="title is-4 has-text-centered">Improving the base policy with online BC</h3>
-      <div class="content prose"><p>Successful ExRL rollouts provide new training data for the base policy. We combine the executed prefixes from successive predictions into new action-chunk targets and use behavior cloning to improve the base policy's predictions.</p></div>
-      <figure class="paper-figure"><img src="static/images/method-online-bc.png" alt="The trajectory continues from s_(t+k) through later states to terminal state s_T, then supplies a successful online rollout. Overlapping H-step sliding windows of the executed actions provide multiple behavior-cloning targets for the base policy." loading="lazy" width="2200" height="950"></figure>
+      <div class="content prose"><p>The successful rollouts produced by ExRL provide a way to improve the base policy itself. We use overlapping segments of executed actions as training chunks for behavior cloning (BC). This teaches the base policy to reproduce the successful behaviors discovered during online interaction.</p></div>
+      <figure class="paper-figure"><img src="static/images/method-online-bc-paper-v3.png" alt="Completed online rollouts train the execution policy with RL. Sliding H-step windows from successful rollouts provide behavior-cloning targets that update the base policy through Online BC." loading="lazy" width="3300" height="1177"></figure>
     </div>
     <div class="method-extension" id="offline-data">
       <h3 class="title is-4 has-text-centered">Learning from offline data</h3>
-      <div class="content prose"><p>ExRL reuses offline trajectories, such as human demonstrations, to accelerate online adaptation. Recorded action sequences become virtual chunks: each prefix supplies an execution length, an accumulated reward, and a resulting state. These transitions join online experience in RL replay to train the execution policy.</p></div>
-      <figure class="paper-figure"><img src="static/images/method-offline-data.png" alt="A contiguous H-step segment is selected from a longer offline trajectory to form a virtual action chunk. Its prefixes of different lengths initialize RL replay data." loading="lazy" width="2200" height="700"></figure>
+      <div class="content prose"><p>We can also use existing trajectories, including human demonstrations, to reduce the need for new robot interaction. ExRL treats a recorded segment as a virtual action chunk: its prefixes show the outcomes of different execution lengths. These examples initialize the RL replay buffer and are reused alongside online experience.</p></div>
+      <figure class="paper-figure"><img src="static/images/method-offline-data-paper-v3.png" alt="An H-step segment from an offline trajectory forms a virtual action chunk. Prefixes of different lengths initialize the offline-data portion of the replay buffer, alongside policy transitions." loading="lazy" width="3300" height="963"></figure>
     </div>
   </div>
 </section>
@@ -106,7 +104,7 @@
 <section class="section" id="results">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">Sample-efficient adaptation across robot policies</h2>
-    <p class="section-intro">ExRL improves long-chunk policies across Robomimic, Adroit, and LIBERO, from Diffusion Policy and ACT to \(\pi_{0}\), \(\pi_{0.5}\), \(\pi_{0}\)-FAST, and Cosmos Policy.</p>
+    <p class="section-intro">Learning execution length yields sample-efficient improvement across Robomimic, Adroit, and LIBERO. The same approach works with Diffusion Policy, ACT, \(\pi_{0}\), \(\pi_{0.5}\), \(\pi_{0}\)-FAST, and Cosmos Policy.</p>
     <div class="tabs is-centered" role="tablist" aria-label="Simulation benchmarks">
       <ul><li class="is-active"><button type="button" role="tab" aria-selected="true" id="result-tab-robo" aria-controls="result-robo" data-result="robo">Robomimic</button></li><li><button type="button" role="tab" aria-selected="false" tabindex="-1" id="result-tab-adroit" aria-controls="result-adroit" data-result="adroit">Adroit</button></li><li><button type="button" role="tab" aria-selected="false" tabindex="-1" id="result-tab-libero" aria-controls="result-libero" data-result="libero">LIBERO</button></li></ul>
     </div>
@@ -131,7 +129,7 @@
 <section class="section" id="execution">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">Watching ExRL choose execution lengths</h2>
-    <p class="section-intro">The videos show each rollout together with the execution length selected by ExRL.</p>
+    <p class="section-intro">The rollouts below show how ExRL changes execution length as a task unfolds, from short adjustments to longer stretches of motion.</p>
     <div class="tabs is-centered gallery-groups" role="tablist" aria-label="Rollout benchmark"><ul id="gallery-groups"></ul></div>
     <div class="clip-buttons" id="gallery-tasks" aria-label="Choose a task"></div>
     <figure class="rollout-figure" id="rollout-panel" role="tabpanel" tabindex="0">
@@ -147,10 +145,12 @@
       <div class="column"><h3 class="title is-4">Replan near contact</h3><div class="content"><p>ExRL often uses longer executions during free motion and shorter ones near an object or target. In power insertion, it repeatedly replans near contact, then commits to a longer execution to finish inserting the plug.</p></div></div>
       <div class="column"><h3 class="title is-4">Let useful chunks unfold</h3><div class="content"><p>On Square, ExRL cuts short proposals with little predicted progress, then executes more of a chunk that contains a sustained grasp-and-lift motion. Short executions create opportunities for correction and a new prediction; longer executions preserve progress through a useful sequence.</p></div></div>
     </div>
-    <figure class="paper-figure"><img src="static/images/execution-patterns.png" alt="Measured execution patterns: shorter executions near contact, short prefixes for low-progress proposals, and longer executions for grasping and lifting." loading="lazy"></figure>
+    <figure class="paper-figure"><img src="static/images/execution-patterns-paper-v2.png" alt="Measured execution patterns: shorter executions near interaction, rejection of low-progress chunks, and short corrections before a longer execution." loading="lazy" width="2960" height="660"></figure>
+    <div class="content prose"><p>On the real robot, stacking and folding combine short adjustments near grasping with longer lifting motions. In parts organization, longer executions carry much of the pick-and-place sequence forward.</p></div>
+    <figure class="paper-figure"><img src="static/images/real-execution-patterns-paper-v1.png" alt="Representative frames and execution-length decisions for stack cube, clothing folding, power insertion, and parts organization." loading="lazy" width="1832" height="1937"></figure>
     <h3 class="title is-4 has-text-centered secondary-heading">Why can frequent replanning get stuck?</h3>
     <div class="content prose"><p>When successive observations produce similar policy features, querying the policy again can reproduce nearly the same first action. The robot may keep moving without reaching the later actions in a useful chunk. Allowing the chunk to continue preserves that progression.</p></div>
-    <figure class="paper-figure"><img src="static/images/feature-aliasing.png" alt="Feature similarity is associated with repeated first actions. Executing an action chunk preserves a sequence of varying commands that repeated replanning misses." loading="lazy"></figure>
+    <figure class="paper-figure"><img src="static/images/feature-aliasing-paper-v2.png" alt="Feature similarity is associated with repeated first actions. Executing an action chunk preserves a sequence of varying commands that repeated replanning misses." loading="lazy" width="2107" height="526"></figure>
     <p class="closing-line">ExRL learns to match execution length to both the situation and the proposed actions.</p>
   </div>
 </section>

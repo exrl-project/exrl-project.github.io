@@ -10,10 +10,9 @@
       .catch(error => console.error('Math typesetting failed:', error));
   }
   const tasks = [['fold', 'Fold cloth'], ['power', 'Power insertion'], ['stack', 'Stack cube']];
-  const labels = [['base', `${pi05} zero-shot`], ['training', 'Uncut ExRL training timelapse'], ['exrl', `${pi05} with ExRL-learned execution policy`]];
+  const labels = [['base', `${pi05} base policy`], ['training', 'Uncut ExRL training timelapse'], ['exrl', `${pi05} with ExRL-learned execution policy`]];
   function evaluationPlayer(key, kind, title, label) {
-    const revision = key === 'fold' && kind === 'exrl' ? 'v5' : 'v4';
-    const file = kind === 'training' ? `${key}-training-v6-white` : `${key}-${kind}-${revision}`;
+    const file = kind === 'training' ? `${key}-training-v12-base` : `${key}-${kind}-v7-smallx`;
     return `<video class="${kind === 'training' ? 'training-video' : 'evaluation-video'}" controls muted loop playsinline data-autoplay preload="none" poster="static/images/${file}.jpg" aria-label="${title}: ${plainLabel(label)}"><source src="static/videos/${file}.mp4" type="video/mp4"></video>`;
   }
   document.querySelector('#real-world-videos').innerHTML = tasks.map(([key, title]) => `
