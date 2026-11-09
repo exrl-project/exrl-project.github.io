@@ -12,9 +12,9 @@ section[id] { scroll-margin-top: 28px; }
 .affiliations .author-block { margin: 0 .3rem; font-size: 22px; }
 .publication-venue { margin: .65rem auto .5rem; font-family: 'Google Sans', sans-serif; font-size: 24px; line-height: 1.5; }
 .publication-venue .oral { color: #ff0000; }
-.button-symbol { margin-right: .45rem; font-size: 17px; }
-.code-symbol { font-size: 14px; font-weight: 700; }
 .publication-links { display: flex; justify-content: center; flex-wrap: wrap; gap: .3rem; }
+.publication-links .button { font-size: 1.25rem; }
+.publication-links .icon img { width: auto; height: 1em; filter: brightness(0) invert(1); }
 video { display: block; width: 100%; height: auto; background: #f5f5f5; }
 .teaser .hero-body { padding-left: 0; padding-right: 0; }
 .teaser video { aspect-ratio: 16/9; background: white; }
