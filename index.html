@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="static/css/fonts.css">
   <link rel="stylesheet" href="static/css/bulma.min.css">
   <link rel="stylesheet" href="static/css/nerfies.css">
-  <link rel="stylesheet" href="static/css/exrl.css?v=20261110-width">
+  <link rel="stylesheet" href="static/css/exrl.css?v=20261110-width2">
   <script src="static/js/mathjax-config.js" defer></script>
   <script src="static/vendor/mathjax/tex-svg.js" defer></script>
   <script src="static/js/exrl.js?v=20261109-color" defer></script>
@@ -163,7 +163,7 @@
     </div>
     <figure class="paper-figure"><img src="static/images/execution-patterns-paper-v2.png" alt="Measured execution patterns: shorter executions near interaction, rejection of low-progress chunks, and short corrections before a longer execution." loading="lazy" width="2960" height="660"></figure>
     <div class="content prose"><p>On the real robot, stacking and folding combine short adjustments near grasping with longer lifting motions. In parts organization, longer executions carry much of the pick-and-place sequence forward.</p></div>
-    <figure class="paper-figure real-patterns-figure"><img src="static/images/real-execution-patterns-paper-v1.png" alt="Representative frames and execution-length decisions for stack cube, clothing folding, power insertion, and parts organization." loading="lazy" width="1832" height="1937"></figure>
+    <figure class="paper-figure"><img src="static/images/real-execution-patterns-paper-v1.png" alt="Representative frames and execution-length decisions for stack cube, clothing folding, power insertion, and parts organization." loading="lazy" width="1832" height="1937"></figure>
     <h3 class="title is-4 has-text-centered secondary-heading">Why can frequent replanning get stuck?</h3>
     <div class="content prose"><p>When successive observations produce similar policy features, querying the policy again can reproduce nearly the same first action. The robot may keep moving without reaching the later actions in a useful chunk. Allowing the chunk to continue preserves that progression.</p></div>
     <figure class="paper-figure"><img src="static/images/feature-aliasing-paper-v2.png" alt="Feature similarity is associated with repeated first actions. Executing an action chunk preserves a sequence of varying commands that repeated replanning misses." loading="lazy" width="2107" height="526"></figure>
