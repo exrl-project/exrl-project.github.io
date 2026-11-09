@@ -164,9 +164,6 @@
     <figure class="paper-figure execution-summary-figure"><img src="static/images/execution-patterns-paper-v2.png" alt="Measured execution patterns: shorter executions near interaction, rejection of low-progress chunks, and short corrections before a longer execution." loading="lazy" width="2960" height="660"></figure>
     <div class="content prose"><p>On the real robot, stacking and folding combine short adjustments near grasping with longer lifting motions. In parts organization, longer executions carry much of the pick-and-place sequence forward.</p></div>
     <figure class="paper-figure"><img src="static/images/real-execution-patterns-paper-v1.png" alt="Representative frames and execution-length decisions for stack cube, clothing folding, power insertion, and parts organization." loading="lazy" width="1832" height="1937"></figure>
-    <div class="content prose"><p>Letting a useful chunk unfold can also avoid repeatedly restarting the same behavior. When successive observations produce similar policy features, replanning can return nearly identical first actions—a form of <em>feature aliasing</em>. Across DP and ACT, smaller feature changes tend to accompany smaller changes in these first actions. The example below shows how continuing an existing chunk preserves the changing actions within it, while repeated replanning keeps returning to the beginning.</p></div>
-    <figure class="paper-figure"><img src="static/images/feature-aliasing-paper-v2.png" alt="Across DP and ACT, feature changes correlate with changes in newly predicted first actions. A paired example shows longer execution preserving the changing actions within a chunk while repeated replanning repeats similar initial commands." loading="lazy" width="2107" height="526"></figure>
-    <p class="closing-line">ExRL learns to match execution length to both the situation and the proposed actions.</p>
   </div>
 </section>
 </main>
