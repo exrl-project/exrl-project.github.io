@@ -13,7 +13,7 @@
   const labels = [['base', `${pi05} base policy`], ['training', 'Uncut ExRL training timelapse'], ['exrl', `${pi05} with ExRL-learned execution policy`]];
   function evaluationPlayer(key, kind, title, label) {
     const file = kind === 'training' ? `${key}-training-v12-base` : `${key}-${kind}-v7-smallx`;
-    return `<video class="${kind === 'training' ? 'training-video' : 'evaluation-video'}" controls muted loop playsinline data-autoplay preload="none" poster="static/images/${file}.jpg" aria-label="${title}: ${plainLabel(label)}"><source src="static/videos/${file}.mp4" type="video/mp4"></video>`;
+    return `<video class="${kind === 'training' ? 'training-video' : 'evaluation-video'}" controls muted loop playsinline data-autoplay preload="none" poster="static/images/${file}.jpg?v=20261109-color" aria-label="${title}: ${plainLabel(label)}"><source src="static/videos/${file}.mp4?v=20261109-color" type="video/mp4"></video>`;
   }
   document.querySelector('#real-world-videos').innerHTML = tasks.map(([key, title]) => `
     <article class="task-row" aria-labelledby="task-${key}">
