@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="static/css/fonts.css">
   <link rel="stylesheet" href="static/css/bulma.min.css">
   <link rel="stylesheet" href="static/css/nerfies.css">
-  <link rel="stylesheet" href="static/css/exrl.css?v=20261110-width2">
+  <link rel="stylesheet" href="static/css/exrl.css?v=20261110-type">
   <script src="static/js/mathjax-config.js" defer></script>
   <script src="static/vendor/mathjax/tex-svg.js" defer></script>
   <script src="static/js/exrl.js?v=20261109-color" defer></script>
@@ -71,7 +71,7 @@
 </section>
 
 <section class="section" id="abstract">
-  <div class="container is-widescreen"><div class="columns is-centered"><div class="column">
+  <div class="container is-max-desktop"><div class="columns is-centered"><div class="column is-four-fifths">
     <h2 class="title is-3 has-text-centered">Abstract</h2>
     <div class="content has-text-justified">
       <p>Predicting long action chunks, often spanning dozens of timesteps, has become a key ingredient in increasingly capable robot policies. In this paper, we find that adapting these long-chunk policies with existing reinforcement learning (RL) methods can require many online samples due to the high dimensionality of the action chunks being optimized, making such adaptation impractical in real-world scenarios where interaction data are costly to collect. Our key insight is to shift adaptation from optimizing actions to optimizing how long to execute each predicted action chunk. This keeps the adaptation space low-dimensional while its expressivity grows with the chunk size. We thus introduce <em>Execution at the Right Length</em> (ExRL), a simple approach which augments the base policy with a lightweight adapter that predicts the execution length of each chunk and is trained using off-policy RL algorithms. Across simulation benchmarks and real-world robotic tasks, ExRL enables sample-efficient adaptation of a diverse range of long-chunk policies with minimal task-specific hyperparameter tuning.</p>
@@ -157,11 +157,11 @@
 <section class="section" id="understanding">
   <div class="container is-widescreen">
     <h2 class="title is-3 has-text-centered">What does ExRL learn about action chunks?</h2>
-    <div class="columns understanding-text">
-      <div class="column"><h3 class="title is-4">Replan near contact</h3><div class="content"><p>ExRL often uses longer executions during free motion and shorter ones near an object or target. In power insertion, it repeatedly replans near contact, then commits to a longer execution to finish inserting the plug.</p></div></div>
-      <div class="column"><h3 class="title is-4">Let useful chunks unfold</h3><div class="content"><p>On Square, ExRL cuts short proposals with little predicted progress, then executes more of a chunk that contains a sustained grasp-and-lift motion. Short executions create opportunities for correction and a new prediction; longer executions preserve progress through a useful sequence.</p></div></div>
+    <div class="content prose understanding-text">
+      <p><strong>Replan near contact:</strong> ExRL often uses longer executions during free motion and shorter ones near an object or target. In power insertion, it repeatedly replans near contact, then commits to a longer execution to finish inserting the plug.</p>
+      <p><strong>Let useful chunks unfold:</strong> On Square, ExRL cuts short proposals with little predicted progress, then executes more of a chunk that contains a sustained grasp-and-lift motion. Short executions create opportunities for correction and a new prediction; longer executions preserve progress through a useful sequence.</p>
     </div>
-    <figure class="paper-figure"><img src="static/images/execution-patterns-paper-v2.png" alt="Measured execution patterns: shorter executions near interaction, rejection of low-progress chunks, and short corrections before a longer execution." loading="lazy" width="2960" height="660"></figure>
+    <figure class="paper-figure execution-summary-figure"><img src="static/images/execution-patterns-paper-v2.png" alt="Measured execution patterns: shorter executions near interaction, rejection of low-progress chunks, and short corrections before a longer execution." loading="lazy" width="2960" height="660"></figure>
     <div class="content prose"><p>On the real robot, stacking and folding combine short adjustments near grasping with longer lifting motions. In parts organization, longer executions carry much of the pick-and-place sequence forward.</p></div>
     <figure class="paper-figure"><img src="static/images/real-execution-patterns-paper-v1.png" alt="Representative frames and execution-length decisions for stack cube, clothing folding, power insertion, and parts organization." loading="lazy" width="1832" height="1937"></figure>
     <h3 class="title is-4 has-text-centered secondary-heading">Why can frequent replanning get stuck?</h3>
