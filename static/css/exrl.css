@@ -89,3 +89,5 @@ button:focus-visible, a:focus-visible, video:focus-visible { outline: 3px solid 
   .closing-line { font-size: 18px; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+#BibTeX pre { font-size: 14px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
